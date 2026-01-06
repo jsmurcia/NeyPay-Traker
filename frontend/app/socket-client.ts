@@ -12,7 +12,10 @@ export const connectToServer = (
   onClientsUpdate?: (clients: string[]) => void,
   onPayCreated?: (pay: Pay) => void
 ) => {
-  const manager = new Manager("http://localhost:3000");
+  const wsUrl =
+    process.env.NEXT_PUBLIC_WS_URL ??
+    (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000');
+  const manager = new Manager(wsUrl);
 
   const socket = manager.socket("/");
 
