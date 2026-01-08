@@ -16,7 +16,13 @@ export class PaysService {
 
   async create(createPayDto: CreatePayDto) {
     try {
-      const transaction = this.payRepository.create(createPayDto);
+      // Si no viene fecha, asignar la actual
+      const payData = {
+        ...createPayDto,
+        date: new Date().toISOString(),
+      };
+      
+      const transaction = this.payRepository.create(payData);
       const saved = await this.payRepository.save(transaction);
       
       // Emitir evento por WebSocket

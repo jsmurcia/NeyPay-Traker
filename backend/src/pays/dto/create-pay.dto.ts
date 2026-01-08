@@ -1,12 +1,9 @@
-import { IsDateString, IsEnum, IsNumber } from 'class-validator';
+import { IsDateString, IsEnum, IsString } from 'class-validator';
 
 export class CreatePayDto {
-  @IsDateString()
-  date: string;
-
   @IsEnum(['nequi', 'daviplata'])
   origin: string;
 
-  @IsNumber({ allowInfinity: false, allowNaN: false })
-  amount: number;
+  @IsString()
+  message: string;
 }

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Pay } from "../socket-client";
+import { extractAmountFromMessage } from "../utils/speech";
 
 interface PaymentsListProps {
   onNewPay?: (pay: Pay) => void;
@@ -39,12 +40,17 @@ export default function PaymentsList({ onNewPay }: PaymentsListProps) {
             >
               <div className="flex justify-between items-start">
                 <div>
-                  <p className="font-semibold text-lg">${payment.amount.toFixed(2)}</p>
+                  <p className="font-semibold text-lg">
+                    ${extractAmountFromMessage(payment.message, payment.origin).toLocaleString("es-CO")}
+                  </p>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
                     Origen: {payment.origin}
                   </p>
                   <p className="text-xs text-gray-500 mt-1">
                     {new Date(payment.date).toLocaleString()}
+                  </p>
+                  <p className="text-xs text-gray-400 mt-2 italic">
+                    {payment.message}
                   </p>
                 </div>
                 <span className="text-xs font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">

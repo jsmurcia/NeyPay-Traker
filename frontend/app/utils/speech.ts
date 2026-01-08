@@ -1,4 +1,6 @@
 export const speak = (text: string) => {
+
+  console.log("-- speak called with text:", text);
   if ("speechSynthesis" in window) {
     // Cancelar cualquier síntesis anterior
     window.speechSynthesis.cancel();
@@ -27,7 +29,24 @@ export const formatPaymentMessage = (
 
   const formattedAmount = amount.toLocaleString("es-CO");
 
-  return `Se recibió un pago de ${formattedAmount} pesos ${
+  return `Se recibió un pago de ${formattedAmount} pesos desde ${
     originText[origin] || ""
   }`;
+};
+
+export const extractAmountFromMessage = (message: string, origin: string): number => {
+  if (origin === 'daviplata') {
+    // Buscar patrón: $XX,XXX o $XX.XXX
+    const match = message.match(/\$(\d{1,3}(?:[.,]\d{3})*)/);  
+    if (match) {
+      return parseInt(match[1].replace(/[.,]/g, ''));
+    }
+  } else if (origin === 'nequi') {
+    // Buscar todos los dígitos consecutivos después de "envió"
+    const match = message.match(/envió\s+([\d.,]+)/);
+    if (match) {
+      return parseInt(match[1].replace(/[.,]/g, ''));
+    }
+  }
+  return 0;
 };

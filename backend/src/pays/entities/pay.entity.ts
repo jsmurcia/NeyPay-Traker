@@ -7,7 +7,7 @@ export class Pay {
     id: string;
 
     @Column()
-    amount: number;
+    message: string;
 
     @CreateDateColumn()
     date: Date;
